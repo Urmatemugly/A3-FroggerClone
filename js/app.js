@@ -1,7 +1,12 @@
 // Enemies our player must avoid
 let Enemy = function() {
+    // Variables applied to each of our instances go here,
+    // we've provided one for you to get started
     this.x = 0;
     this.y = 0;
+    this.skip = 101;
+    // The image/sprite for our enemies, this uses
+    // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
 };
 
@@ -11,17 +16,12 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-
-
-    // if enemy is not passed boundary
-      // move forward
-      // increment x by speed * dt
-
-    // else
+    if (this.x < this.step * 4) {
+      this.x += 200 * dt;
+    }
+    // else {
       // reset pos to start
-
-
-};
+    };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -31,71 +31,54 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
-
-
-
 class Hero {
   constructor() {
-    this.sprite = 'images/char-boy.png';
-    this.step = 101;
-    this.jump = 83;
-    this.startX = this.step *2;
-    this.startY = this.jump * 5;
+    this.sprite = 'images/char-boy.png'
+    this.hop = 101;
+    this.skip = 83;
+    this.startX = this.skip * 2;
+    this.startY = (this.hop * 4);
     this.x = this.startX;
     this.y = this.startY;
 
   }
-  // methods
-      // update position
-        // check colliison here
-          // did player x and y collide with enemy?
-          // Check win
-          // Did player x and y reach final tile?
-      // draw player sprite on current x and y coord position
-render() {
+  // Draw the player to the screen
+  render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
-  // keyboard input
-  handleInput(input){
+  }
+  handleInput(input) {
     switch(input) {
       case 'left':
-      this.x -= this.step;
+        if (this.x > 0) {
+          this.x -= this.skip;
+        }
       break;
       case 'up':
-      this.y -= this.jump;
+        if (this.y > this.hop) {
+          this.y -= this.hop;
+        }
       break;
       case 'right':
-      this.x += this.step;
+        if (this.x < this.skip * 4) {
+          this.x += this.skip;
+        }
+      break;
       case 'down':
-      this.y += this.jump;
+        if (this.y < this.hop * 5) {
+          this.y += this.hop;
+        }
       break;
     }
   }
-          // Update player's x and y property according to input
-  // reset hero
-          // set x and y to starting x and y
-
-
-  }
-
-
+}
 
 // Now instantiate your objects.
-
-
-    // new hero object
+// Place all enemy objects in an array called allEnemies
+let allEnemies = [];
+// Place the player object in a variable called player
 const player = new Hero();
 const bug1 = new Enemy();
-const allEnemies = [];
 allEnemies.push(bug1);
-    // init allenemies Array
-    // for each enemy create and push new enemy object into above array
-
-
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
