@@ -1,13 +1,16 @@
 // Enemies our player must avoid
-let Enemy = function() {
+let Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.x = 0;
-    this.y = 0;
+    this.x = x + 35;
+    this.y = y;
+    this.speed = speed;
     this.skip = 101;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.boundary = this.skip * 5;
+    this.resetX = this.x;
 };
 
 // Update the enemy's position, required method for game
@@ -16,11 +19,12 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    if (this.x < this.step * 4) {
-      this.x += 200 * dt;
-    }
-    // else {
-      // reset pos to start
+    if (this.x < 505) {
+      this.x += this.speed * dt;
+      }
+    if (this.x > 505) {
+      this.x = this.resetX
+      }
     };
 
 // Draw the enemy on the screen, required method for game
@@ -36,11 +40,18 @@ class Hero {
     this.sprite = 'images/char-boy.png'
     this.hop = 101;
     this.skip = 83;
-    this.startX = this.skip * 2;
+    this.startX = this.skip * 2 + 35;
     this.startY = (this.hop * 4);
     this.x = this.startX;
     this.y = this.startY;
 
+  }
+  update() {
+      for (let enemy of allEnemies) {
+        if (this.y === enemy.y) {
+          console.log('same row');
+        }
+      }
   }
   // Draw the player to the screen
   render() {
@@ -49,13 +60,16 @@ class Hero {
   handleInput(input) {
     switch(input) {
       case 'left':
-        if (this.x > 0) {
+        if (this.x > 50) {
           this.x -= this.skip;
         }
       break;
       case 'up':
-        if (this.y > this.hop) {
+        if (this.y > this.hop - 40) {
           this.y -= this.hop;
+        }
+        else if (this.y < this.hop -40) {
+          this.y = this.startY;
         }
       break;
       case 'right':
@@ -64,7 +78,7 @@ class Hero {
         }
       break;
       case 'down':
-        if (this.y < this.hop * 5) {
+        if (this.y < this.hop * 4) {
           this.y += this.hop;
         }
       break;
@@ -77,8 +91,10 @@ class Hero {
 let allEnemies = [];
 // Place the player object in a variable called player
 const player = new Hero();
-const bug1 = new Enemy();
-allEnemies.push(bug1);
+const enemyOne = new Enemy(-1, 55, 200);
+const enemyTwo = new Enemy(-1, 130, 300);
+const enemyThree = new Enemy(-1, 210, 500);
+allEnemies.push(enemyOne, enemyTwo, enemyThree);
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -91,4 +107,5 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
-});
+}
+);
