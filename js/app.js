@@ -2,10 +2,10 @@
 let Enemy = function(x,y,speed) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.x = x + 35;
+    this.x = x;
     this.y = y;
     this.speed = speed;
-    this.skip = 101;
+    this.skip = 83;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -40,21 +40,22 @@ class Hero {
     this.sprite = 'images/char-boy.png'
     this.hop = 101;
     this.skip = 83;
-    this.startX = this.skip * 2 + 35;
-    this.startY = (this.hop * 4);
+    this.sWidth = 35;
+    this.startX = this.skip * 2.5;
+    this.startY = this.hop * 4;
     this.x = this.startX;
     this.y = this.startY;
 
   }
   update() {
       for (let enemy of allEnemies) {
-        if (this.y === enemy.y) {
-          console.log('same row');
+        if (this.y == enemy.y && this.x == enemy.x - this.sWidth)  {
+          console.log("collision!");
         }
       }
   }
   // Draw the player to the screen
-  render() {
+  render(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
   handleInput(input) {
@@ -68,7 +69,7 @@ class Hero {
         if (this.y > this.hop - 40) {
           this.y -= this.hop;
         }
-        else if (this.y < this.hop -40) {
+        else if (this.y < this.hop) {
           this.y = this.startY;
         }
       break;
@@ -91,9 +92,10 @@ class Hero {
 let allEnemies = [];
 // Place the player object in a variable called player
 const player = new Hero();
-const enemyOne = new Enemy(-1, 55, 200);
-const enemyTwo = new Enemy(-1, 130, 300);
-const enemyThree = new Enemy(-1, 210, 500);
+const enemyOne = new Enemy(-10,0, 200);
+const enemyTwo = new Enemy(-10, 101, 300);
+const enemyThree = new Enemy(-10, 202, 430);
+
 allEnemies.push(enemyOne, enemyTwo, enemyThree);
 
 // This listens for key presses and sends the keys to your
